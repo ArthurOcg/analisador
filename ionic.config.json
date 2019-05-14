@@ -1,5 +1,7 @@
 {
   "name": "analisador",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
