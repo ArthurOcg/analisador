@@ -1,9 +1,50 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>
+    <ion-title *ngIf="picture">
       Resultado da Foto
     </ion-title>
+    <ion-title *ngIf="!picture">
+        Tire sua Foto
+      </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+
+  <div *ngIf="picture">
+      <img *ngIf="picture" [src]="picture" alt="Foto que foi tirada">
+    
+    <p>{{error}}</p>
+    <ion-fab vertical="center" horizontal="center">
+      <ion-fab-button (click)="startCamera()">
+        <ion-icon name="arrow-dropleft"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <ion-fab vertical="bottom" horizontal="end">
+      <ion-fab-button (click)="avancar()">
+          <ion-icon name="checkmark"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+  
+
+  <div *ngIf="!picture">
+
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+      <ion-fab-button (click)="takePicture()">
+        <ion-icon name="camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+
+    <ion-fab vertical="top" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="switchCamera()">
+        <ion-icon name="reverse-camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+  </div>
+
+  
+</ion-content>

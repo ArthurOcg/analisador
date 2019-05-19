@@ -1,1 +1,26 @@
 
+/* html, body, .ion-app, .ion-content {
+    background-color: transparent !important;
+  } */
+
+/*   html, body, .ion-app, .host, .page-home, .app-tab2, .ion-content, .ion-page, .nav-decor, .inner-scroll {
+   background: transparent !important;
+   background-color: transparent !important;
+   opacity: 0;
+} */
+/* app-tab2 {
+    ion-content {
+    background-color: transparent !important;
+    }
+    }
+    ion-app,.nav-decor {
+    background-color: transparent !important;
+  } */
+
+  ion-content {
+    --background: transparent !important;
+  }
+
+  .ion-content-white {
+    background-color: #fff;
+  }

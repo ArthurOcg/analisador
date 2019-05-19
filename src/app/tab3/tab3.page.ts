@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import chartJs from 'chart.js';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -12,7 +13,11 @@ export class Tab3Page {
   @ViewChild('barCanvas') barCanvas;
 
   barChart: any;
+  mensagem: string = '';
 
+  constructor(public router: Router){
+
+  }
 
   getChart(context, chartType, data, options?) {
     return new chartJs(context, {
@@ -66,5 +71,9 @@ export class Tab3Page {
     setTimeout(() => {
       this.barChart = this.getBarChart();
     }, 150)
+  }
+
+  avancar(): void {
+    this.router.navigate(['/tabs/tab1']).then(()=>{})
   }
 }
