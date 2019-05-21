@@ -1,6 +1,6 @@
+import { AnalisadorService } from './../services/analisador.service';
 import { Component } from '@angular/core';
 import { CameraPreview, CameraPreviewPictureOptions, CameraPreviewOptions, CameraPreviewDimensions } from '@ionic-native/camera-preview/ngx';
-import { NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
 @Component({
@@ -31,7 +31,8 @@ export class Tab2Page {
   };
 
   constructor(private cameraPreview: CameraPreview,
-              public router: Router) { }
+              public router: Router,
+              private analiserService: AnalisadorService) { }
 
 
   ngOnInit(){
@@ -67,6 +68,10 @@ export class Tab2Page {
   }
 
   avancar(): void {
-    this.router.navigate(['/tabs/tab3']).then(()=>{})
+    this.router.navigate(['/tabs/tab3']).then(()=>{
+      
+        this.analiserService.setImagem(this.picture);
+      
+    })
   }
 }

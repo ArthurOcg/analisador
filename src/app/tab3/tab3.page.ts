@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import chartJs from 'chart.js';
 import { Router } from '@angular/router';
+import { AnalisadorService } from '../services/analisador.service';
 
 
 @Component({
@@ -15,9 +16,21 @@ export class Tab3Page {
   barChart: any;
   mensagem: string = '';
 
-  constructor(public router: Router){
+  constructor(public router: Router, private analiserService: AnalisadorService){
 
   }
+
+  ngOnInit(){
+    if(this.analiserService.getImagem()){
+
+      this.mensagem = this.analiserService.getImagem();
+    }
+  }
+
+  ionViewWillEnter(){
+    this.mensagem = this.analiserService.getImagem();
+  }
+
 
   getChart(context, chartType, data, options?) {
     return new chartJs(context, {
@@ -71,6 +84,9 @@ export class Tab3Page {
     setTimeout(() => {
       this.barChart = this.getBarChart();
     }, 150)
+    if(this.mensagem !== this.analiserService.getImagem()){
+      this.mensagem = this.analiserService.getImagem();
+    }
   }
 
   avancar(): void {
