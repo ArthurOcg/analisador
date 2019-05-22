@@ -15,6 +15,9 @@ export class Tab3Page {
 
   barChart: any;
   mensagem: string = '';
+  resposta: any;
+  aviso1: string;
+  aviso2: string;
 
   constructor(public router: Router, private analiserService: AnalisadorService){
 
@@ -87,6 +90,13 @@ export class Tab3Page {
     if(this.mensagem !== this.analiserService.getImagem()){
       this.mensagem = this.analiserService.getImagem();
     }
+    this.analiserService.outra(this.mensagem).subscribe(lista => {
+      this.aviso1= lista.histo[0];
+      this.analiserService.resposta = lista;
+      this.resposta = lista;
+    }, error =>{
+      this.resposta = error;
+    })
   }
 
   avancar(): void {

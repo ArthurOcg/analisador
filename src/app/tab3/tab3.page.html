@@ -26,4 +26,14 @@
     </ion-card-content>
   </ion-card>
 
+  <ion-card *ngIf="resposta">
+    <ion-card-header>
+      Lista
+    </ion-card-header>
+    <ion-card-content>
+     <p>{{resposta.histo | json}}</p>
+    </ion-card-content>
+  </ion-card>
+  <p>{{aviso1}}</p>
+
 </ion-content>

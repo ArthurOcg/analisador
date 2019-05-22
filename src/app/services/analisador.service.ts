@@ -23,7 +23,7 @@ export class AnalisadorService {
 
   outra(img: string): Observable<any> {
     let headers = new HttpHeaders({'Access-Control-Allow-Headers': 'Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'});
-    let url2='http://analize.herokuapp.com/analize'
+    let url2='http://analize.herokuapp.com/histogramas'
     let data = {"imagem": img}
     return this.http.post(url2, data, {headers: headers});
   }
