@@ -10,30 +10,31 @@
 
   <ion-card>
     <ion-card-header>
-      Histograma
+      Histograma Vermelho
     </ion-card-header>
     <ion-card-content>
       <canvas #barCanvas></canvas>
     </ion-card-content>
   </ion-card>
+  <ion-card>
 
-  <ion-card *ngIf="mensagem">
     <ion-card-header>
-      Imagem
+      Histograma Verde
     </ion-card-header>
     <ion-card-content>
-     <img [src]="mensagem" alt="">
+      <canvas #barCanvas2></canvas>
     </ion-card-content>
   </ion-card>
+  <ion-card>
 
-  <ion-card *ngIf="resposta">
     <ion-card-header>
-      Lista
+      Histograma Azul
     </ion-card-header>
     <ion-card-content>
-     <p>{{resposta.histo | json}}</p>
+      <canvas #barCanvas3></canvas>
     </ion-card-content>
   </ion-card>
-  <p>{{aviso1}}</p>
+  
+  <!-- <p>{{aviso1}}</p> -->
 
 </ion-content>
