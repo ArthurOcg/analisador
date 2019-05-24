@@ -9,7 +9,7 @@ export class AnalisadorService {
 
   imagem: string;
 
-  resposta: any;
+  resposta: any[]=[];
 
   constructor(public http: HttpClient) { }
 
