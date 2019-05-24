@@ -30,6 +30,7 @@
     "cordova-browser": "6.0.0",
     "cordova-plugin-camera-preview": "0.10.0",
     "core-js": "^2.5.4",
+    "ngx-csv": "^0.3.1",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.29"
