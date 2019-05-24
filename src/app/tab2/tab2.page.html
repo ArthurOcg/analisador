@@ -13,11 +13,19 @@
 
   <div *ngIf="picture">
       <img *ngIf="picture" [src]="picture" alt="Foto que foi tirada">
+      <img *ngIf="newPicture" [src]="newPicture" alt="Foto que foi tirada">
+
     
-    <p>{{error}}</p>
+    <p>{{error | json}}</p>
     <ion-fab vertical="bottom" horizontal="start">
       <ion-fab-button (click)="startCamera()">
         <ion-icon name="refresh"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <ion-fab vertical="bottom" horizontal="center">
+      <ion-fab-button (click)="cortar(picture)">
+        <ion-icon name="crop"></ion-icon>
       </ion-fab-button>
     </ion-fab>
 

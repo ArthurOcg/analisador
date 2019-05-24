@@ -137,7 +137,7 @@ export class Tab3Page {
 
   geraCsv(){
 
-    let data = this.analiserService.resposta;
+    let data = JSON.stringify(this.analiserService.resposta);
     var options = { 
       fieldSeparator: '',
       quoteStrings: '"',
