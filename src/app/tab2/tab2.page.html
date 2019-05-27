@@ -24,7 +24,7 @@
     </ion-fab>
 
     <ion-fab vertical="bottom" horizontal="center">
-      <ion-fab-button (click)="cortar(picture)">
+      <ion-fab-button (click)="cortar(fileUrl)" [disabled]="!fileUrl">
         <ion-icon name="crop"></ion-icon>
       </ion-fab-button>
     </ion-fab>
@@ -45,10 +45,22 @@
       </ion-fab-button>
     </ion-fab>
 
-
+<!-- 
     <ion-fab vertical="top" horizontal="end" slot="fixed">
       <ion-fab-button (click)="switchCamera()">
         <ion-icon name="reverse-camera"></ion-icon>
+      </ion-fab-button>
+    </ion-fab> -->
+
+    <ion-fab vertical="top" horizontal="start" slot="fixed">
+      <ion-fab-button (click)="fixarFoco()">
+        <ion-icon name="radio-button-on"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <ion-fab vertical="top" horizontal="end" slot="fixed">
+      <ion-fab-button (click)="autoFoco()">
+          <ion-icon name="aperture"></ion-icon>
       </ion-fab-button>
     </ion-fab>
 

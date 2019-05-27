@@ -35,10 +35,14 @@
     </ion-card-content>
   </ion-card>
 
-
+  <div style="margin:5%">
+    <textarea rows="100" disabled>
+      {{ analiserService.resposta | json }}
+    </textarea>
+  </div>
   
 
-  <ion-button *ngIf="listaB" (click)="geraCsv()">Gerar CSV</ion-button>
+  <ion-button (click)="geraCsv()">Gerar CSV</ion-button>
 
   
   <!-- <p>{{analiserService.resposta | json}}</p> -->

@@ -8,7 +8,7 @@ import { TabsPageRoutingModule } from './tabs.router.module';
 import { TabsPage } from './tabs.page';
 import { AnalisadorService } from '../services/analisador.service';
 import { Crop } from '@ionic-native/crop/ngx';
-
+import { File } from '@ionic-native/file/ngx';
 @NgModule({
   imports: [
     IonicModule,
@@ -17,6 +17,6 @@ import { Crop } from '@ionic-native/crop/ngx';
     TabsPageRoutingModule
   ],
   declarations: [TabsPage],
-  providers: [AnalisadorService, Crop]
+  providers: [AnalisadorService, Crop, File]
 })
 export class TabsPageModule {}
