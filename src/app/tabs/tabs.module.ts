@@ -9,6 +9,7 @@ import { TabsPage } from './tabs.page';
 import { AnalisadorService } from '../services/analisador.service';
 import { Crop } from '@ionic-native/crop/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 @NgModule({
   imports: [
     IonicModule,
@@ -17,6 +18,6 @@ import { File } from '@ionic-native/file/ngx';
     TabsPageRoutingModule
   ],
   declarations: [TabsPage],
-  providers: [AnalisadorService, Crop, File]
+  providers: [AnalisadorService, Crop, File, Base64ToGallery]
 })
 export class TabsPageModule {}

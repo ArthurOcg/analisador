@@ -4,6 +4,7 @@ import { CameraPreview, CameraPreviewPictureOptions, CameraPreviewOptions, Camer
 import { Router } from '@angular/router';
 import { Crop } from '@ionic-native/crop/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 
 
 @Component({
@@ -15,6 +16,7 @@ export class Tab2Page {
 
   error: any = 'au';
   picture: string;
+  localArquivo: string;
 
   cameraOpts: CameraPreviewOptions = {
     x: 0,
@@ -48,16 +50,17 @@ export class Tab2Page {
     public router: Router,
     private analiserService: AnalisadorService,
     private crop: Crop,
-    private file: File) { }
+    private file: File,
+    private base64ToGallery: Base64ToGallery) { }
 
 
   ngOnInit() {
     this.startCamera();
   }
 
-  ionViewWillEnter(){
-    this.file.checkDir(this.file.externalApplicationStorageDirectory,'AnalisadorPIC').then((res)=>{
-      console.log('a pasta existe: '+ res);
+  ionViewWillEnter() {
+    this.file.checkDir(this.file.externalApplicationStorageDirectory, 'AnalisadorPIC').then((res) => {
+      console.log('a pasta existe: ' + res);
       this.error = res;
     })
 
@@ -90,14 +93,13 @@ export class Tab2Page {
 
 
   takePicture() {
-    this.criarPasta();
-    this.cameraPreview.takePicture(this.cameraPictureOpts).then((res) => {
+      return this.cameraPreview.takePicture(this.cameraPictureOpts).then((res) => {
       this.picture = 'data:image/jpeg;base64,' + res;
+      this.base64ToGallery.base64ToGallery(this.picture).then((ponse)=>{
+        console.log(ponse);
+        this.respData = ponse;
+      }).catch(console.log)
       console.log('Entrou no take.')
-      /* this.file.resolveDirectoryUrl(this.fileUrl).then((e)=>{
-        this.fileUrl = e;
-      }); */
-
       this.cameraPreview.stopCamera().then((res) => {
       }).catch(error => console.log('Deu erro pra fechar a camera:', error));
 
@@ -107,32 +109,41 @@ export class Tab2Page {
 
   avancar(): void {
     this.router.navigate(['/tabs/tab3']).then(() => {
-
       this.analiserService.setImagem(this.picture);
-
     })
   }
 
   cortar(path: any): any {
-    this.crop.crop(path + 'Image-'+Date.now()+'.jpg', { quality: 100 })
-      .then(newImage => { this.newPicture = newImage },
-        error => this.error = error);
+    this.crop.crop(this.localArquivo, { quality: 100 })
+      .then(newImage => { this.newPicture = newImage }).catch(console.log);
   }
 
-  criarPasta(): void {
-    this.file.createDir(this.file.externalApplicationStorageDirectory, 'AnalisadorPIC', true).then((path) => {
+  criarPasta() {
+    return this.file.createDir(this.file.externalApplicationStorageDirectory, 'AnalisadorPIC', true).then((path) => {
       alert('Foi criado a pasta Pictures.' + path.toURL())
       this.fileUrl = path.toURL();
       if (this.picture) {
-        //let blob = new Blob([this.picture], { type: 'image/jpg' })
-        this.file.writeFile(path.toURL(), 'Image-'+Date.now().toString()+'.jpg', this.picture).then((ui) => {
-          alert('Salvou na pasta' + path.toURL());
-          this.error = ui;
-        }).catch(error => this.error = error);
+        
       }
     }).catch(error => {
       this.error = error
     })
+  }
+
+  salvarFoto(path){
+    let nomeArquivo = `Image-${Date.now().toString()}.jpeg`;
+    let blob = new Blob([this.picture], { type: 'image/jpeg' })
+        return this.file.writeFile(path, nomeArquivo, blob).then((ui) => {
+          alert('Salvou na pasta' + path);
+          this.localArquivo = `${path}${nomeArquivo}`;
+          this.error = ui;
+        }).catch(error => this.error = error);
+  }
+
+  async capturaFoto(){
+    await this.criarPasta();
+    await this.takePicture();
+    await this.salvarFoto(this.fileUrl);
   }
 
 }

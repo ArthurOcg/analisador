@@ -59,7 +59,6 @@ export class Tab3Page {
     if(this.analiserService.getImagem()){
      
       this.mensagem = this.analiserService.getImagem();
-      //this.geraCsv();
            
     }
   }
@@ -167,17 +166,13 @@ export class Tab3Page {
     headers: false
   };
 
-  geraCsv(){
-   
-    this.criarPasta();
+  geraCsv() {
     this.arquivo = new ngxCsv(this.analiserService.resposta, 'ArquivoHistograma', this.options);
-    if(this.caminho){
-
-      this.salvaArquivo();
-    }
   }
+
+
   criarPasta(){
-    this.file.createDir(this.file.cacheDirectory, 'csv', true).then((res)=>{
+    return this.file.createDir(this.file.externalApplicationStorageDirectory, 'csv', true).then((res)=>{
       alert('A pasta foi criada: ' + res.toURL());
       this.caminho =  res.toURL()
     })
@@ -189,5 +184,12 @@ export class Tab3Page {
       console.log(res)
       console.log(res.json())
     })
+  }
+
+  async salvarResultado(){
+    this.geraCsv();
+    await this.criarPasta();
+    await this.salvaArquivo();
+
   }
 }
