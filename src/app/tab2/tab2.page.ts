@@ -132,12 +132,24 @@ export class Tab2Page {
 
   salvarFoto(path){
     let nomeArquivo = `Image-${Date.now().toString()}.jpeg`;
-    let blob = new Blob([this.picture], { type: 'image/jpeg' })
+    //let blob = new Blob([this.picture], { type: 'image/jpeg' })
+    let blob = this.convertParaBlob(this.picture);
         return this.file.writeFile(path, nomeArquivo, blob).then((ui) => {
           alert('Salvou na pasta' + path);
           this.localArquivo = `${path}${nomeArquivo}`;
           this.error = ui;
         }).catch(error => this.error = error);
+  }
+
+  convertParaBlob(data): Blob {
+    const separado = data.split(',');
+    const img = atob(separado[1]);
+    let n = img.length;
+    const array8 = new Uint8Array(n);
+    while(n--) {
+      array8[n] = img.charCodeAt(n)
+    }
+    return new Blob([array8], { type: 'image/jpeg' });
   }
 
   async capturaFoto(){
