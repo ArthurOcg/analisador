@@ -56,8 +56,7 @@ export class Tab3Page {
   }
 
   ngOnInit(){
-    if(this.analiserService.getImagem()){
-     
+    if(this.analiserService.getImagem()){     
       this.mensagem = this.analiserService.getImagem();
            
     }
@@ -66,13 +65,8 @@ export class Tab3Page {
   ionViewWillEnter(){
     this.mensagem = this.analiserService.getImagem();
     this.geraHisto();
-    this.teste.push(this.dadosg)
-    this.teste.push(this.dadosh)
-    
-   /*  this.arquivocsv.dados = this.dados;
-    this.analiserService.resposta.push(this.dados);
-      this.analiserService.resposta.push(this.dados)
-    this.geraCsv(); */
+    this.teste.push(this.dadosg);
+    this.teste.push(this.dadosh);
   }
 
 
@@ -179,10 +173,14 @@ export class Tab3Page {
   }
 
   salvaArquivo(){
-    this.file.writeFile(this.caminho, 'Histograma.csv', this.arquivo ).then((res)=>{
-      alert('Foi salvo' + res)
-      console.log(res)
-      console.log(res.json())
+    const data = Date.now().toString();
+    let nomeArquivo = `Histograma-${data}.csv`;
+    this.file.writeFile(this.caminho, nomeArquivo, this.arquivo).then((res)=>{
+      alert('Arquivo foi salvo!' + this.caminho);
+      //console.log(res.json())
+    }).catch(error => {
+      alert('Não foi possível salvar!' + error);
+      console.log(error);
     })
   }
 

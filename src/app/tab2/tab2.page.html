@@ -13,9 +13,10 @@
 
   <div *ngIf="picture">
       <img *ngIf="picture" [src]="picture" alt="Foto que foi tirada">
-      <img *ngIf="newPicture" [src]="newPicture" alt="Foto que foi tirada">
+      <img *ngIf="newPicture" [src]="newPicture" alt="Foto que após corte:">
 
     
+    <p>{{newPicture | json}}</p>
     <p>{{error | json}}</p>
     <ion-fab vertical="bottom" horizontal="start">
       <ion-fab-button (click)="startCamera()">

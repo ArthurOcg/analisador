@@ -4,7 +4,6 @@ import { CameraPreview, CameraPreviewPictureOptions, CameraPreviewOptions, Camer
 import { Router } from '@angular/router';
 import { Crop } from '@ionic-native/crop/ngx';
 import { File } from '@ionic-native/file/ngx';
-import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 
 
 @Component({
@@ -14,7 +13,7 @@ import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 })
 export class Tab2Page {
 
-  error: any = 'au';
+  error: any;
   picture: string;
   localArquivo: string;
 
@@ -37,11 +36,6 @@ export class Tab2Page {
     quality: 100
   };
 
-  corte: CameraPreviewDimensions = {
-    height: 300,
-    width: 300
-  }
-
   newPicture: string;
   fileUrl: any = null;
   respData: any;
@@ -50,8 +44,7 @@ export class Tab2Page {
     public router: Router,
     private analiserService: AnalisadorService,
     private crop: Crop,
-    private file: File,
-    private base64ToGallery: Base64ToGallery) { }
+    private file: File ) { }
 
 
   ngOnInit() {
@@ -95,10 +88,6 @@ export class Tab2Page {
   takePicture() {
       return this.cameraPreview.takePicture(this.cameraPictureOpts).then((res) => {
       this.picture = 'data:image/jpeg;base64,' + res;
-      this.base64ToGallery.base64ToGallery(this.picture).then((ponse)=>{
-        console.log(ponse);
-        this.respData = ponse;
-      }).catch(console.log)
       console.log('Entrou no take.')
       this.cameraPreview.stopCamera().then((res) => {
       }).catch(error => console.log('Deu erro pra fechar a camera:', error));
@@ -115,16 +104,29 @@ export class Tab2Page {
 
   cortar(path: any): any {
     this.crop.crop(this.localArquivo, { quality: 100 })
-      .then(newImage => { this.newPicture = newImage }).catch(console.log);
+      .then(newImage => { 
+        let path;
+        const nome = newImage.split('/');
+        const caminho = newImage.split('cache');
+        let quantidade = nome.length;//this.newPicture = newImage;
+        let nomearq = nome[(quantidade-1)].split('?');
+        alert('Nome arquivo: '+ nomearq[0]);
+        this.file.resolveDirectoryUrl(caminho[0]+'cache/').then(resp => {
+          this.error = {"nome":"Aqui resolvendo",  resp};
+        });
+        this.file.readAsDataURL(`${caminho[0]}cache/`, nomearq[0]).then(res=>{
+          this.newPicture = res;
+        }).catch(res=> {
+          this.error = {'aqui e o erro do read': res};
+        });
+        //this.newPicture = this.file.getFile(newImage, , {create: true, })
+        alert(newImage) }).catch(console.log);
   }
 
   criarPasta() {
     return this.file.createDir(this.file.externalApplicationStorageDirectory, 'AnalisadorPIC', true).then((path) => {
-      alert('Foi criado a pasta Pictures.' + path.toURL())
+      console.log('Foi criado a pasta AnalisadorPIC.' + path.toURL())
       this.fileUrl = path.toURL();
-      if (this.picture) {
-        
-      }
     }).catch(error => {
       this.error = error
     })
@@ -132,7 +134,6 @@ export class Tab2Page {
 
   salvarFoto(path){
     let nomeArquivo = `Image-${Date.now().toString()}.jpeg`;
-    //let blob = new Blob([this.picture], { type: 'image/jpeg' })
     let blob = this.convertParaBlob(this.picture);
         return this.file.writeFile(path, nomeArquivo, blob).then((ui) => {
           alert('Salvou na pasta' + path);
