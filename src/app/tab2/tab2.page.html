@@ -4,20 +4,34 @@
       Resultado da Foto
     </ion-title>
     <ion-title *ngIf="!picture">
-        Tire sua Foto
-      </ion-title>
+      Tire sua Foto
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 
   <div *ngIf="picture">
-      <img *ngIf="picture" [src]="picture" alt="Foto que foi tirada">
-      <img *ngIf="newPicture" [src]="newPicture" alt="Foto que após corte:">
+    
+    <ion-card *ngIf="picture">
+      <ion-card-header>
+        Imagem capturada:
+      </ion-card-header>
+      <ion-card-content>
+        <img *ngIf="picture" [src]="picture" alt="Foto que foi tirada">
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="newPicture">
+      <ion-card-header>
+        Imagem após corte:
+      </ion-card-header>
+      <ion-card-content>
+        <img [src]="newPicture" alt="Foto que após corte.">
+      </ion-card-content>
+    </ion-card>
 
     
-    <p>{{newPicture | json}}</p>
-    <p>{{error | json}}</p>
     <ion-fab vertical="bottom" horizontal="start">
       <ion-fab-button (click)="startCamera()">
         <ion-icon name="refresh"></ion-icon>
@@ -36,7 +50,7 @@
       </ion-fab-button>
     </ion-fab>
   </div>
-  
+
 
   <div *ngIf="!picture">
 
@@ -46,13 +60,6 @@
       </ion-fab-button>
     </ion-fab>
 
-<!-- 
-    <ion-fab vertical="top" horizontal="end" slot="fixed">
-      <ion-fab-button (click)="switchCamera()">
-        <ion-icon name="reverse-camera"></ion-icon>
-      </ion-fab-button>
-    </ion-fab> -->
-
     <ion-fab vertical="top" horizontal="start" slot="fixed">
       <ion-fab-button (click)="fixarFoco()">
         <ion-icon name="radio-button-on"></ion-icon>
@@ -61,7 +68,7 @@
 
     <ion-fab vertical="top" horizontal="end" slot="fixed">
       <ion-fab-button (click)="autoFoco()">
-          <ion-icon name="aperture"></ion-icon>
+        <ion-icon name="aperture"></ion-icon>
       </ion-fab-button>
     </ion-fab>
 

@@ -44,7 +44,7 @@ export class Tab2Page {
     public router: Router,
     private analiserService: AnalisadorService,
     private crop: Crop,
-    private file: File ) { }
+    private file: File) { }
 
 
   ngOnInit() {
@@ -52,10 +52,6 @@ export class Tab2Page {
   }
 
   ionViewWillEnter() {
-    this.file.checkDir(this.file.externalApplicationStorageDirectory, 'AnalisadorPIC').then((res) => {
-      console.log('a pasta existe: ' + res);
-      this.error = res;
-    })
 
   }
 
@@ -64,11 +60,10 @@ export class Tab2Page {
   startCamera() {
     this.picture = null;
     this.cameraPreview.startCamera(this.cameraOpts).then((res) => {
-      this.error = res;
-      console.log('Chamou pra abrir.');
+      console.log('Abriu a camera.');
     }).catch(error => {
       this.error = error;
-      console.log('deu erro ao abrir a camera', error)
+      console.log('Deu erro ao abrir a camera', error)
     });
   }
 
@@ -86,8 +81,10 @@ export class Tab2Page {
 
 
   takePicture() {
-      return this.cameraPreview.takePicture(this.cameraPictureOpts).then((res) => {
+    return this.cameraPreview.takePicture(this.cameraPictureOpts).then((res) => {
       this.picture = 'data:image/jpeg;base64,' + res;
+      this.newPicture = null;
+      this.analiserService.setImagem(null);
       console.log('Entrou no take.')
       this.cameraPreview.stopCamera().then((res) => {
       }).catch(error => console.log('Deu erro pra fechar a camera:', error));
@@ -98,29 +95,31 @@ export class Tab2Page {
 
   avancar(): void {
     this.router.navigate(['/tabs/tab3']).then(() => {
-      this.analiserService.setImagem(this.picture);
+      if (this.newPicture) {
+        this.analiserService.setImagem(this.newPicture);
+      } else {
+        alert('Não foi realizado o corte da imagem, ela será analisada por completa!');
+        if(this.picture){
+          this.analiserService.setImagem(this.picture);
+        }
+      }
     })
   }
 
   cortar(path: any): any {
     this.crop.crop(this.localArquivo, { quality: 100 })
-      .then(newImage => { 
-        let path;
-        const nome = newImage.split('/');
-        const caminho = newImage.split('cache');
-        let quantidade = nome.length;//this.newPicture = newImage;
-        let nomearq = nome[(quantidade-1)].split('?');
-        alert('Nome arquivo: '+ nomearq[0]);
-        this.file.resolveDirectoryUrl(caminho[0]+'cache/').then(resp => {
-          this.error = {"nome":"Aqui resolvendo",  resp};
-        });
-        this.file.readAsDataURL(`${caminho[0]}cache/`, nomearq[0]).then(res=>{
+      .then(pathCorte => {
+        const nome = pathCorte.split('/');
+        const caminho = pathCorte.split('cache');
+        let quantidade = nome.length;
+        let nomearq = nome[(quantidade - 1)].split('?');
+        alert('Arraste a tela pra cima para visualizar o corte na imagem. Nome do novo arquivo: ' + nomearq[0]);
+        this.file.readAsDataURL(`${caminho[0]}cache/`, nomearq[0]).then(res => {
           this.newPicture = res;
-        }).catch(res=> {
-          this.error = {'aqui e o erro do read': res};
+        }).catch(res => {
+          this.error = { 'aqui e o erro do read': res };
         });
-        //this.newPicture = this.file.getFile(newImage, , {create: true, })
-        alert(newImage) }).catch(console.log);
+      }).catch(console.log);
   }
 
   criarPasta() {
@@ -132,14 +131,14 @@ export class Tab2Page {
     })
   }
 
-  salvarFoto(path){
+  salvarFoto(path) {
     let nomeArquivo = `Image-${Date.now().toString()}.jpeg`;
     let blob = this.convertParaBlob(this.picture);
-        return this.file.writeFile(path, nomeArquivo, blob).then((ui) => {
-          alert('Salvou na pasta' + path);
-          this.localArquivo = `${path}${nomeArquivo}`;
-          this.error = ui;
-        }).catch(error => this.error = error);
+    return this.file.writeFile(path, nomeArquivo, blob).then((ui) => {
+      alert('Salvou na pasta' + path);
+      this.localArquivo = `${path}${nomeArquivo}`;
+      this.error = ui;
+    }).catch(error => this.error = error);
   }
 
   convertParaBlob(data): Blob {
@@ -147,13 +146,13 @@ export class Tab2Page {
     const img = atob(separado[1]);
     let n = img.length;
     const array8 = new Uint8Array(n);
-    while(n--) {
+    while (n--) {
       array8[n] = img.charCodeAt(n)
     }
     return new Blob([array8], { type: 'image/jpeg' });
   }
 
-  async capturaFoto(){
+  async capturaFoto() {
     await this.criarPasta();
     await this.takePicture();
     await this.salvarFoto(this.fileUrl);
