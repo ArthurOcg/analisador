@@ -127,7 +127,7 @@ export class Tab3Page {
       this.barChart1 = this.getBarChart(this.barCanvas1, this.listaG, 'rgb(156, 230, 20)');
       this.barChart2 = this.getBarChart(this.barCanvas2, this.listaB, 'rgb(20, 0, 255)');
     }, error => {
-      alert('Erro ao gerar histograma:' + error.status);
+      alert('Erro ao gerar histograma:' + error.error);
       this.resposta = error;
     });
   }
