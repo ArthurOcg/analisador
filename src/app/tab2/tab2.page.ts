@@ -73,10 +73,14 @@ export class Tab2Page {
   }
 
   fixarFoco(): void {
-    this.cameraPreview.setFocusMode(this.cameraPreview.FOCUS_MODE.FIXED);
+    this.cameraPreview.setFocusMode(this.cameraPreview.FOCUS_MODE.FIXED).then(()=>{
+      alert('Foco fixado!');
+    }).catch(()=> alert('Tente novamente!'));
   }
   autoFoco(): void {
-    this.cameraPreview.setFocusMode(this.cameraPreview.FOCUS_MODE.CONTINUOUS_PICTURE);
+    this.cameraPreview.setFocusMode(this.cameraPreview.FOCUS_MODE.CONTINUOUS_PICTURE).then(()=>{
+      alert('Foco automático ativo!');
+    }).catch(()=> alert('Tente novamente!'));
   }
 
 
@@ -137,8 +141,8 @@ export class Tab2Page {
     return this.file.writeFile(path, nomeArquivo, blob).then((ui) => {
       alert('Salvou na pasta' + path);
       this.localArquivo = `${path}${nomeArquivo}`;
-      this.error = ui;
-    }).catch(error => this.error = error);
+      console.log(ui);
+    }).catch(error => console.log);
   }
 
   convertParaBlob(data): Blob {

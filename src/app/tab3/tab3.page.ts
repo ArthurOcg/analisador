@@ -155,6 +155,7 @@ export class Tab3Page {
 
   geraCsv() {
     this.arquivo = new ngxCsv(this.analiserService.resposta, 'ArquivoHistograma', this.options);
+    this.resposta = this.analiserService.resposta;
   }
 
 
